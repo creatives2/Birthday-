@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>A Little Film for You</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Caveat:wght@400;500;600;700&family=Work+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- grain / dust / vignette overlays, sit above everything -->
+<div class="grain-overlay" aria-hidden="true"></div>
+<div class="vignette-overlay" aria-hidden="true"></div>
+<div class="scratches-overlay" aria-hidden="true"></div>
+
+<!-- ================= TERMINAL GATE : PYTHON-INSPIRED OPENING ================= -->
+<section id="terminal-gate" class="opening terminal-gate">
+  <canvas id="star-canvas-terminal" class="star-canvas" aria-hidden="true"></canvas>
+  <div class="terminal-window" role="group" aria-label="birthday_system.py terminal">
+    <div class="terminal-titlebar">
+      <span class="terminal-dot"></span><span class="terminal-dot"></span><span class="terminal-dot"></span>
+      <span class="terminal-filename">birthday_system.py</span>
+    </div>
+    <div class="terminal-body" id="terminal-body">
+      <p class="term-line">Enter your name:</p>
+      <div class="term-input-row" id="term-input-row">
+        <span class="term-prompt">&gt;</span>
+        <input type="text" id="term-name-input" class="term-input" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Enter your name">
+        <span class="term-cursor" aria-hidden="true"></span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= OPENING : FILM REEL ================= -->
+<section id="opening" class="opening" hidden>
+  <canvas id="star-canvas-opening" class="star-canvas" aria-hidden="true"></canvas>
+  <div class="opening-content">
+    <p class="eyebrow">projector reel no. 01</p>
+    <h1 class="title-card">A little film for you.</h1>
+    <p class="subtitle">Press play when you're ready.</p>
+    <button id="play-button" class="play-button" aria-label="Play the film and begin music">
+      <span class="play-icon">▶</span> PLAY THE FILM <span class="note">♫</span>
+    </button>
+    <p class="opening-hint">headphones recommended, but not required</p>
+  </div>
+</section>
+
+<!-- ================= MAIN FILM (hidden until played) ================= -->
+<main id="film" class="film" hidden>
+
+  <!-- floating persistent music player -->
+  <div id="music-player" class="music-player">
+    <button id="toggle-play" class="player-btn" aria-label="Play or pause music">
+      <span id="play-pause-icon">❚❚</span>
+    </button>
+    <div class="player-viz" id="player-viz" aria-hidden="true">
+      <span></span><span></span><span></span><span></span><span></span>
+    </div>
+    <input id="progress-bar" class="progress-bar" type="range" min="0" max="100" value="0" aria-label="Song progress">
+    <button id="volume-toggle" class="player-btn small" aria-label="Toggle volume">🔊</button>
+    <input id="volume-bar" class="volume-bar" type="range" min="0" max="100" value="70" aria-label="Volume">
+  </div>
+  <audio id="bg-audio" src="assets/music/song.mp3" preload="none" loop></audio>
+
+  <!-- SCENE 01 — THE UNIVERSE -->
+  <section class="scene scene-universe" data-scene="1">
+    <canvas class="star-canvas" data-parallax></canvas>
+    <div class="scene-inner">
+      <p class="title-card reveal">Somewhere in this enormous universe&hellip;</p>
+      <p class="title-card reveal delay-1">&hellip;there's you.</p>
+      <p class="title-card reveal delay-2 emphasis">And somehow, I found you.</p>
+    </div>
+    <div class="shooting-star" aria-hidden="true"></div>
+  </section>
+
+  <!-- SCENE 02 — THE LITTLE HUMAN -->
+  <section class="scene scene-childhood" data-scene="2">
+    <canvas class="star-canvas" data-parallax></canvas>
+    <div class="scene-inner">
+      <p class="title-card reveal">Before I knew you&hellip;</p>
+      <figure class="film-photo reveal delay-1">
+        <img src="assets/photos/childhood.jpg" alt="Childhood photo" loading="lazy">
+        <figcaption class="handwritten" data-editable="childhood-caption">you were already out there, being exactly this kind of wonderful.</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- SCENE 03 — THE PERSON I KNOW NOW -->
+  <section class="scene scene-now" data-scene="3">
+    <canvas class="star-canvas" data-parallax></canvas>
+    <div class="scene-inner">
+      <p class="title-card reveal">And now, this is you.</p>
+      <div class="drift-gallery" id="drift-gallery">
+        <!-- populated by script.js from PHOTOS array -->
+      </div>
+    </div>
+  </section>
+
+  <!-- SCENE 04 — HIS LITTLE UNIVERSE -->
+  <section class="scene scene-art" data-scene="4">
+    <canvas class="star-canvas" data-parallax></canvas>
+    <div class="scene-inner">
+      <p class="eyebrow">scene 04</p>
+      <p class="title-card reveal">You make things that exist only in your head&hellip;</p>
+      <div class="art-orbit reveal delay-1">
+        <img src="assets/art/his-drawing-01.jpg" alt="His drawing" class="orbit-planet" loading="lazy">
+      </div>
+      <p class="handwritten reveal delay-2" data-editable="art-message">I could watch you make things forever.</p>
+    </div>
+  </section>
+
+  <!-- SCENE 05 — DISTANCE -->
+  <section class="scene scene-distance" data-scene="5">
+    <canvas class="star-canvas" data-parallax></canvas>
+    <div class="distance-visual">
+      <div class="star-node star-me"><span class="node-label handwritten">me</span></div>
+      <svg class="signal-line" viewBox="0 0 100 20" preserveAspectRatio="none" aria-hidden="true">
+        <path d="M2,10 Q50,2 98,10" />
+      </svg>
+      <div class="star-node star-him"><span class="node-label handwritten" data-editable="his-name-short">him</span></div>
+    </div>
+    <div class="scene-inner">
+      <p class="title-card reveal" data-editable="distance-message">Yes, we're far apart. But somehow, you're still close.</p>
+    </div>
+  </section>
+
+  <!-- SCENE 06 — OUR DRAWING -->
+  <section class="scene scene-ours" data-scene="6">
+    <canvas class="star-canvas" data-parallax></canvas>
+    <div class="scene-inner">
+      <p class="title-card reveal">And then there's this&hellip;</p>
+      <figure class="film-photo constellation-frame reveal delay-2">
+        <img src="assets/art/our-drawing.jpg" alt="A drawing of the two of us" loading="lazy">
+      </figure>
+      <p class="handwritten reveal delay-3" data-editable="ours-message">A little version of us that distance can't keep apart.</p>
+    </div>
+  </section>
+
+  <!-- SCENE 07 — LITTLE THINGS (interactive constellation) -->
+  <section class="scene scene-constellation" data-scene="7">
+    <canvas class="star-canvas" data-parallax></canvas>
+    <div class="scene-inner">
+      <p class="title-card reveal">Little things I don't say enough.</p>
+      <p class="instruction reveal delay-1">tap a star</p>
+      <div class="constellation-field" id="constellation-field"></div>
+    </div>
+    <div class="star-message-card" id="star-message-card" hidden>
+      <p class="handwritten" id="star-message-text"></p>
+      <button class="close-card" id="close-star-card" aria-label="Close">✕</button>
+    </div>
+  </section>
+
+  <!-- SCENE 08 — DREAMS -->
+  <section class="scene scene-dreams" data-scene="8">
+    <canvas class="star-canvas" data-parallax></canvas>
+    <div class="scene-inner">
+      <p class="title-card reveal">Whatever direction life takes you&hellip;</p>
+      <p class="title-card reveal delay-1">I hope you keep following the things that make you curious.</p>
+      <p class="title-card reveal delay-2 emphasis">Keep looking up.</p>
+    </div>
+  </section>
+
+  <!-- SCENE 09 — THE BIRTHDAY LETTER -->
+  <section class="scene scene-letter" data-scene="9">
+    <canvas class="star-canvas" data-parallax></canvas>
+    <div class="letter-frame reveal">
+      <p class="letter-eyebrow">a letter, frame by frame</p>
+      <div class="letter-body handwritten" data-editable="letter-body">
+Happy birthday.
+
+I don't think I could ever fit everything I feel about you
+onto one page — but I wanted to try anyway.
+
+[ write your real letter here — replace this whole block
+  in script.js under LETTER_TEXT ]
+
+— me
+      </div>
+    </div>
+  </section>
+
+  <!-- FINAL SCENE — THE UNIVERSE -->
+  <section class="scene scene-final" data-scene="10">
+    <canvas class="star-canvas" id="final-canvas"></canvas>
+    <div class="scene-inner final-inner">
+      <p class="title-card reveal final-line" data-editable="final-name">Happy Birthday, my favorite human.</p>
+      <p class="title-card reveal delay-1 emphasis">You make my little universe brighter.</p>
+      <button id="one-more-thing" class="ghost-button reveal delay-2">ONE MORE THING <span class="heart">♡</span></button>
+      <div class="hidden-message handwritten" id="hidden-message" hidden data-editable="hidden-message">
+        Every star up there, and I still think you're the best thing I've ever found.
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<script src="script.js"></script>
+</body>
+</html>
