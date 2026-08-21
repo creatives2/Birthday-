@@ -28,11 +28,12 @@
     </div>
     <div class="terminal-body" id="terminal-body">
       <p class="term-line">Enter your name:</p>
-      <div class="term-input-row" id="term-input-row">
+      <form id="term-input-row" class="term-input-row" autocomplete="off">
         <span class="term-prompt">&gt;</span>
-        <input type="text" id="term-name-input" class="term-input" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Enter your name">
+        <input type="text" id="term-name-input" class="term-input" autocomplete="off" autocapitalize="off" spellcheck="false" enterkeyhint="go" aria-label="Enter your name">
         <span class="term-cursor" aria-hidden="true"></span>
-      </div>
+        <button type="submit" class="term-submit" aria-label="Submit name">&#9166;</button>
+      </form>
     </div>
   </div>
 </section>
