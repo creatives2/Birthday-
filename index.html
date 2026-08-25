@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy Birthday, Sumukhiii</title>
+
+<!-- Google Fonts: Cormorant Garamond (headings), Dancing Script (her name), Work Sans (body), Caveat (captions) -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,500;1,600&family=Dancing+Script:wght@600;700&family=Work+Sans:wght@300;400;500;600&family=Caveat:wght@500;600&display=swap" rel="stylesheet">
+
+<style>
+  /* ============ TOKENS ============ */
+  :root{
+    --cream:#FBF3EF;
+    --blush:#F5DEE3;
+    --dusty:#D9A9B4;
+    --berry:#8B4A5C;
+    --ink:#4A3238;
+    --gold:#C9A66B;
+    --paper:#F1E3D9;
+
+    --display: 'Cormorant Garamond', serif;
+    --script: 'Dancing Script', cursive;
+    --body: 'Work Sans', sans-serif;
+    --caption: 'Caveat', cursive;
+
+    --ease: cubic-bezier(.22,.61,.36,1);
+  }
+
+  *{ box-sizing:border-box; }
+
+  html{ scroll-behavior:smooth; }
+
+  body{
+    margin:0;
+    font-family:var(--body);
+    color:var(--ink);
+    background:var(--cream);
+    overflow-x:hidden;
+  }
+
+  h1,h2,h3{ margin:0; font-weight:500; }
+
+  button{
+    font-family:var(--body);
+    cursor:pointer;
+    border:none;
+    background:none;
+  }
+
+  img{ max-width:100%; display:block; }
+
+  section{
+    position:relative;
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:6rem 1.5rem;
+    text-align:center;
+  }
+
+  /* ============ AMBIENT BACKGROUND (soft watercolor washes, no images needed) ============ */
+  .bg-wash{
+    position:fixed;
+    inset:0;
+    z-index:-2;
+    background:
+      radial-gradient(ellipse 60% 45% at 8% 5%, rgba(217,169,180,0.35), transparent 60%),
+      radial-gradient(ellipse 55% 40% at 95% 90%, rgba(217,169,180,0.30), transparent 60%),
+      var(--cream);
+    pointer-events:none;
+  }
+
+  /* floating petal particles */
+  .petals{ position:fixed; inset:0; z-index:-1; pointer-events:none; overflow:hidden; }
+  .petal{
+    position:absolute;
+    top:-5%;
+    width:10px; height:10px;
+    background:var(--dusty);
+    opacity:.35;
+    border-radius:70% 30% 60% 40% / 60% 40% 60% 40%;
+    animation:drift linear infinite;
+  }
+  @keyframes drift{
+    0%{ transform:translateY(0) translateX(0) rotate(0deg); opacity:0; }
+    10%{ opacity:.4; }
+    90%{ opacity:.35; }
+    100%{ transform:translateY(110vh) translateX(20px) rotate(180deg); opacity:0; }
+  }
+
+  /* ============ FADE-UP ON SCROLL ============ */
+  .reveal{
+    opacity:0;
+    transform:translateY(24px);
+    transition:opacity .9s var(--ease), transform .9s var(--ease);
+  }
+  .reveal.in-view{ opacity:1; transform:translateY(0); }
+
+  /* ============ OPENING SCREEN ============ */
+  #opening{
+    position:fixed;
+    inset:0;
+    z-index:100;
+    background:var(--blush);
+    min-height:100vh;
+    transition:opacity 1s var(--ease), visibility 1s var(--ease), transform 1s var(--ease);
+  }
+  #opening.hidden{
+    opacity:0;
+    visibility:hidden;
+    transform:scale(1.04);
+    pointer-events:none;
+  }
+  .opening-inner{ max-width:480px; }
+  .opening-inner .greet{
+    font-family:var(--display);
+    font-size:clamp(2rem, 6vw, 2.8rem);
+    font-style:italic;
+    color:var(--berry);
+    margin-bottom:.75rem;
+  }
+  .opening-inner .sub{
+    font-family:var(--caption);
+    font-size:1.4rem;
+    color:var(--ink);
+    opacity:.8;
+    margin-bottom:2.5rem;
+  }
+
+  .btn{
+    display:inline-block;
+    font-family:var(--body);
+    font-size:.95rem;
+    letter-spacing:.03em;
+    padding:.9rem 2.1rem;
+    border-radius:999px;
+    background:var(--berry);
+    color:var(--cream);
+    transition:transform .35s var(--ease), box-shadow .35s var(--ease);
+    box-shadow:0 8px 20px -8px rgba(139,74,92,.5);
+  }
+  .btn:hover{ transform:translateY(-3px); box-shadow:0 12px 24px -8px rgba(139,74,92,.55); }
+  .btn:active{ transform:translateY(0); }
+  .btn.outline{
+    background:transparent;
+    color:var(--berry);
+    border:1.5px solid var(--berry);
+    box-shadow:none;
+  }
+
+  /* ============ HERO ============ */
+  #hero{ flex-direction:column; gap:1.5rem; }
+  .hero-heading{
+    font-family:var(--display);
+    font-style:italic;
+    font-weight:500;
+    font-size:clamp(2.4rem, 8vw, 4.2rem);
+    line-height:1.15;
+    color:var(--ink);
+  }
+  .hero-heading .name{
+    display:block;
+    font-family:var(--script);
+    font-style:normal;
+    font-weight:700;
+    color:var(--berry);
+    font-size:clamp(3rem, 12vw, 5.5rem);
+    margin-top:.2rem;
+  }
+  .hero-sub{
+    font-family:var(--body);
+    font-weight:400;
+    font-size:clamp(1.05rem, 3vw, 1.3rem);
+    color:var(--ink);
+    opacity:.85;
+    max-width:420px;
+    margin-top:.5rem;
+  }
+  .hero-cta{ margin-top:1.5rem; }
+
+  .hero-deco{
+    font-size:1.6rem;
+    letter-spacing:.6rem;
+    color:var(--gold);
+    opacity:.7;
+  }
+
+  /* ============ INTRO ============ */
+  #intro{ flex-direction:column; gap:1rem; }
+  .intro-line1{
+    font-family:var(--display);
+    font-style:italic;
+    font-size:clamp(1.5rem, 4.5vw, 2.1rem);
+    color:var(--berry);
+    max-width:520px;
+  }
+  .intro-line2{
+    font-family:var(--body);
+    font-size:1.05rem;
+    line-height:1.9;
+    max-width:480px;
+    opacity:.85;
+  }
+  .scroll-indicator{
+    margin-top:2.5rem;
+    font-family:var(--caption);
+    font-size:1.3rem;
+    color:var(--berry);
+    background:none;
+    animation:bob 2.6s ease-in-out infinite;
+  }
+  @keyframes bob{
+    0%,100%{ transform:translateY(0); }
+    50%{ transform:translateY(8px); }
+  }
+
+  /* ============ GALLERY ============ */
+  #gallery{ flex-direction:column; padding-top:5rem; padding-bottom:5rem; }
+  .gallery-heading{
+    font-family:var(--display);
+    font-style:italic;
+    font-size:clamp(1.8rem, 5vw, 2.6rem);
+    color:var(--ink);
+    margin-bottom:3rem;
+  }
+  .gallery-grid{
+    display:grid;
+    grid-template-columns:repeat(2, minmax(140px, 220px));
+    gap:2.2rem 1.5rem;
+    max-width:960px;
+    justify-content:center;
+  }
+  @media(min-width:720px){
+    .gallery-grid{ grid-template-columns:repeat(3, minmax(180px, 260px)); gap:3rem 2rem; }
+  }
+
+  .polaroid{
+    background:#fff;
+    padding:.6rem .6rem 1.1rem;
+    border-radius:3px;
+    box-shadow:0 10px 24px -10px rgba(74,50,56,.35);
+    cursor:pointer;
+    transition:transform .4s var(--ease), box-shadow .4s var(--ease);
+  }
+  .polaroid:hover, .polaroid:focus-visible{
+    transform:translateY(-8px) rotate(0deg) scale(1.03);
+    box-shadow:0 18px 30px -10px rgba(74,50,56,.4);
+  }
+  .polaroid .frame{
+    width:100%;
+    aspect-ratio:1/1;
+    overflow:hidden;
+    background:var(--blush);
+    border-radius:2px;
+  }
+  .polaroid .frame img{ width:100%; height:100%; object-fit:cover; }
+  .polaroid figcaption{
+    font-family:var(--caption);
+    font-size:1.15rem;
+    color:var(--ink);
+    margin-top:.7rem;
+    line-height:1.3;
+  }
+  .polaroid figcaption .secondary{
+    display:block;
+    font-family:var(--body);
+    font-size:.72rem;
+    color:var(--berry);
+    opacity:.75;
+    margin-top:.15rem;
+    letter-spacing:.02em;
+  }
+
+  /* varied scrapbook tilts */
+  .polaroid:nth-child(1){ transform:rotate(-4deg); }
+  .polaroid:nth-child(2){ transform:rotate(3deg); margin-top:1.5rem; }
+  .polaroid:nth-child(3){ transform:rotate(-2deg); }
+  .polaroid:nth-child(4){ transform:rotate(4deg); }
+  .polaroid:nth-child(5){ transform:rotate(-3deg); margin-top:1.5rem; }
+  .polaroid:nth-child(6){ transform:rotate(2deg); }
+  .polaroid:nth-child(1):hover{ transform:translateY(-8px) rotate(-4deg) scale(1.03); }
+  .polaroid:nth-child(2):hover{ transform:translateY(-8px) rotate(3deg) scale(1.03); }
+  .polaroid:nth-child(3):hover{ transform:translateY(-8px) rotate(-2deg) scale(1.03); }
+  .polaroid:nth-child(4):hover{ transform:translateY(-8px) rotate(4deg) scale(1.03); }
+  .polaroid:nth-child(5):hover{ transform:translateY(-8px) rotate(-3deg) scale(1.03); }
+  .polaroid:nth-child(6):hover{ transform:translateY(-8px) rotate(2deg) scale(1.03); }
+
+  /* ============ LIGHTBOX ============ */
+  #lightbox{
+    position:fixed;
+    inset:0;
+    background:rgba(74,50,56,.82);
+    z-index:200;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:2rem;
+    opacity:0;
+    visibility:hidden;
+    transition:opacity .4s var(--ease), visibility .4s var(--ease);
+  }
+  #lightbox.open{ opacity:1; visibility:visible; }
+  .lightbox-inner{
+    max-width:560px;
+    width:100%;
+    background:#fff;
+    border-radius:6px;
+    padding:1rem 1rem 1.6rem;
+    transform:scale(.92);
+    transition:transform .4s var(--ease);
+  }
+  #lightbox.open .lightbox-inner{ transform:scale(1); }
+  .lightbox-inner img{ width:100%; border-radius:3px; max-height:65vh; object-fit:contain; background:var(--blush); }
+  .lightbox-inner figcaption{
+    font-family:var(--caption);
+    font-size:1.4rem;
+    margin-top:.9rem;
+    color:var(--ink);
+  }
+  .lightbox-close{
+    position:absolute;
+    top:1.5rem; right:1.5rem;
+    color:#fff;
+    font-size:1.8rem;
+    line-height:1;
+    opacity:.8;
+  }
+  .lightbox-close:hover{ opacity:1; }
+
+  /* ============ AFTER GALLERY ============ */
+  #after-gallery{ flex-direction:column; gap:1.4rem; }
+  .ag-line1{ font-family:var(--caption); font-size:1.6rem; color:var(--berry); }
+  .ag-line2{ font-family:var(--display); font-style:italic; font-size:clamp(1.4rem,4vw,1.9rem); }
+  .ag-cta{ margin-top:1.5rem; }
+
+  /* ============ ENVELOPE ============ */
+  #envelope-section{ flex-direction:column; gap:2rem; }
+  .env-label{ font-family:var(--display); font-style:italic; font-size:1.4rem; color:var(--ink); }
+  .env-sub{ font-family:var(--caption); font-size:1.15rem; color:var(--berry); opacity:.85; margin-top:-1rem; }
+
+  .envelope{
+    position:relative;
+    width:min(320px, 80vw);
+    aspect-ratio:3/2;
+    margin:0 auto;
+  }
+  .envelope-body{
+    position:absolute; inset:0;
+    background:var(--paper);
+    border-radius:6px;
+    box-shadow:0 16px 34px -14px rgba(74,50,56,.45);
+    overflow:hidden;
+  }
+  .envelope-flap{
+    position:absolute;
+    top:0; left:0; right:0;
+    height:55%;
+    background:var(--dusty);
+    clip-path:polygon(0 0, 100% 0, 50% 100%);
+    transform-origin:top center;
+    transition:transform .8s var(--ease);
+    z-index:3;
+  }
+  .envelope.opening .envelope-flap{ transform:scaleY(0) ; opacity:0; }
+  .envelope-seal{
+    position:absolute;
+    left:50%; top:42%;
+    transform:translate(-50%,-50%);
+    width:52px; height:52px;
+    background:var(--berry);
+    border-radius:50%;
+    color:var(--cream);
+    display:flex; align-items:center; justify-content:center;
+    font-size:1.2rem;
+    z-index:4;
+    box-shadow:0 6px 14px -4px rgba(74,50,56,.5);
+  }
+  .envelope.opening .envelope-seal{ opacity:0; transition:opacity .3s ease; }
+
+  #open-letter-btn{ margin-top:.5rem; }
+  .envelope.opening + #open-letter-btn{ opacity:0; pointer-events:none; }
+
+  /* ============ LETTER ============ */
+  #letter-wrap{
+    max-width:560px;
+    width:100%;
+    background:var(--paper);
+    border-radius:8px;
+    padding:2.6rem 2rem;
+    box-shadow:0 20px 40px -18px rgba(74,50,56,.4);
+    opacity:0;
+    transform:scale(.85) translateY(20px);
+    transition:opacity .8s var(--ease), transform .8s var(--ease);
+    display:none;
+  }
+  #letter-wrap.show{ display:block; opacity:1; transform:scale(1) translateY(0); }
+  .letter-heading{
+    font-family:var(--script);
+    font-size:2rem;
+    color:var(--berry);
+    margin-bottom:1.2rem;
+  }
+  .letter-body{
+    font-family:var(--body);
+    font-size:1.02rem;
+    line-height:2;
+    text-align:left;
+    color:var(--ink);
+    white-space:pre-line;
+  }
+
+  /* ============ ENDING ============ */
+  #ending{ flex-direction:column; gap:1rem; }
+  .end-line1{ font-family:var(--display); font-style:italic; font-size:clamp(1.8rem,5vw,2.6rem); color:var(--berry); }
+  .end-line2{ font-family:var(--body); font-size:1.05rem; line-height:1.9; max-width:420px; opacity:.85; }
+  .end-made{ font-family:var(--caption); font-size:1.2rem; margin-top:2rem; opacity:.7; }
+
+  /* ============ MUSIC TOGGLE ============ */
+  #music-toggle{
+    position:fixed;
+    bottom:1.4rem; right:1.4rem;
+    z-index:150;
+    width:48px; height:48px;
+    border-radius:50%;
+    background:var(--berry);
+    color:var(--cream);
+    display:flex; align-items:center; justify-content:center;
+    font-size:1.25rem;
+    box-shadow:0 8px 20px -8px rgba(139,74,92,.55);
+    transition:transform .3s var(--ease);
+  }
+  #music-toggle:hover{ transform:scale(1.08); }
+  #music-toggle.opening-hidden{ opacity:0; visibility:hidden; }
+
+  /* ============ REDUCED MOTION ============ */
+  @media (prefers-reduced-motion: reduce){
+    html{ scroll-behavior:auto; }
+    *{ animation:none !important; transition-duration:.01ms !important; }
+    .reveal{ opacity:1; transform:none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="bg-wash"></div>
+<div class="petals" id="petals"></div>
+
+<!-- ============ OPENING SCREEN ============ -->
+<div id="opening">
+  <section style="min-height:100vh;">
+    <div class="opening-inner">
+      <div class="greet">Hey, Sumukhiii 👀</div>
+      <div class="sub">I made something for you…</div>
+      <button class="btn" id="open-site-btn">Open it ♡</button>
+    </div>
+  </section>
+</div>
+
+<!-- ============ HERO ============ -->
+<section id="hero">
+  <div class="hero-deco reveal">✦ ✦ ✦</div>
+  <h1 class="hero-heading reveal">
+    Happy Birthday,
+    <span class="name">Sumukhiii 👻🥹</span>
+  </h1>
+  <p class="hero-sub reveal">You're 18 now 😤<br>Mature hmm.</p>
+  <div class="hero-cta reveal">
+    <button class="btn" data-scroll-to="#intro">Okay, let's go →</button>
+  </div>
+</section>
+
+<!-- ============ INTRO ============ -->
+<section id="intro">
+  <p class="intro-line1 reveal">Since it's your birthday, I thought I'd collect a few things…</p>
+  <p class="intro-line2 reveal">
+    Some memories.<br>
+    Some questionable evidence.<br>
+    And some things you probably forgot about. 😌
+  </p>
+  <button class="scroll-indicator reveal" data-scroll-to="#gallery">Memory lane ↓</button>
+</section>
+
+<!-- ============ GALLERY ============ -->
+<section id="gallery">
+  <div style="width:100%;">
+    <h2 class="gallery-heading reveal">A little scrapbook</h2>
+    <div class="gallery-grid" id="gallery-grid"><!-- filled by JS --></div>
+  </div>
+</section>
+
+<!-- ============ LIGHTBOX ============ -->
+<div id="lightbox">
+  <button class="lightbox-close" id="lightbox-close" aria-label="Close">&times;</button>
+  <figure class="lightbox-inner">
+    <img id="lightbox-img" src="" alt="">
+    <figcaption id="lightbox-caption"></figcaption>
+  </figure>
+</div>
+
+<!-- ============ AFTER GALLERY ============ -->
+<section id="after-gallery">
+  <p class="ag-line1 reveal">Okay... that's enough evidence for now. 😭</p>
+  <p class="ag-line2 reveal">But I'm not done yet.</p>
+  <div class="ag-cta reveal">
+    <button class="btn" data-scroll-to="#envelope-section">There's something else for you... 💌</button>
+  </div>
+</section>
+
+<!-- ============ ENVELOPE / LETTER ============ -->
+<section id="envelope-section">
+  <div class="env-label reveal">For you, birthday boy ♡</div>
+  <div class="env-sub reveal">Open when you're ready.</div>
+
+  <div class="envelope reveal" id="envelope">
+    <div class="envelope-body"></div>
+    <div class="envelope-flap"></div>
+    <div class="envelope-seal">♡</div>
+  </div>
+
+  <button class="btn outline reveal" id="open-letter-btn">Open the letter 💌</button>
+
+  <div id="letter-wrap">
+    <div class="letter-heading">To Sumukhiii,</div>
+    <div class="letter-body" id="letter-body">
+<!-- ================================================================ -->
+<!-- EDIT ME: replace this placeholder with the real letter text.      -->
+<!-- Use blank lines for paragraph breaks — they'll show automatically. -->
+<!-- ================================================================ -->
+[ Write your letter to Sumukhiii here. This is just a placeholder — replace this entire block of text with what you actually want to say. Line breaks and blank lines will be preserved exactly as you type them. ]
+    </div>
+  </div>
+</section>
+
+<!-- ============ ENDING ============ -->
+<section id="ending">
+  <h2 class="end-line1 reveal">Happy 18th, Sumukhiii ♡</h2>
+  <p class="end-line2 reveal">
+    Stay exactly the kind of person you are.<br>
+    And yes… try being a little mature now. 😤
+  </p>
+  <p class="end-made reveal">Made with ♡</p>
+</section>
+
+<!-- ============ MUSIC ============ -->
+<!-- EDIT ME: replace song.mp3 with your uploaded file's name/path -->
+<audio id="bg-music" loop src="song.mp3"></audio>
+<button id="music-toggle" class="opening-hidden" aria-label="Toggle music">♪</button>
+
+<script>
+/* ================================================================
+   EDIT ME: MEMORY GALLERY CONTENT
+   Replace the "src" with your uploaded image filenames.
+   Suggested folder structure (create an "images" folder in your repo):
+     images/memory-1.jpg
+     images/memory-2.jpg
+     images/memory-3.jpg
+     images/memory-4.jpg
+     images/memory-5.jpg
+     images/memory-6.jpg
+   ================================================================ */
+const memories = [
+  {
+    src: "images/memory-1.jpg",
+    caption: "The real baby 🐥",
+    secondary: "Look at youuuu 😭"
+  },
+  {
+    src: "images/memory-2.jpg",
+    caption: "Hihihihi 😁",
+    secondary: "And this is where it all started…"
+  },
+  {
+    src: "images/memory-3.jpg",
+    caption: "Jaisi bhi hai, teri hai 🥹",
+    secondary: ""
+  },
+  {
+    src: "images/memory-4.jpg",
+    caption: "👀 hmm",
+    secondary: ""
+  },
+  {
+    src: "images/memory-5.jpg",
+    caption: "😏 hm hm",
+    secondary: ""
+  },
+  {
+    src: "images/memory-6.jpg",
+    caption: "😤 Dekh liyo ek aur baar.",
+    secondary: ""
+  }
+];
+
+const galleryGrid = document.getElementById('gallery-grid');
+memories.forEach((m, i) => {
+  const fig = document.createElement('figure');
+  fig.className = 'polaroid reveal';
+  fig.tabIndex = 0;
+  fig.innerHTML = `
+    <div class="frame"><img src="${m.src}" alt="${m.caption}" loading="lazy"></div>
+    <figcaption>${m.caption}${m.secondary ? `<span class="secondary">${m.secondary}</span>` : ''}</figcaption>
+  `;
+  fig.addEventListener('click', () => openLightbox(m));
+  fig.addEventListener('keydown', e => { if(e.key === 'Enter') openLightbox(m); });
+  galleryGrid.appendChild(fig);
+});
+
+/* ---------- Lightbox ---------- */
+const lightbox = document.getElementById('lightbox');
+const lightboxImg = document.getElementById('lightbox-img');
+const lightboxCaption = document.getElementById('lightbox-caption');
+
+function openLightbox(m){
+  lightboxImg.src = m.src;
+  lightboxImg.alt = m.caption;
+  lightboxCaption.textContent = m.caption;
+  lightbox.classList.add('open');
+}
+function closeLightbox(){ lightbox.classList.remove('open'); }
+document.getElementById('lightbox-close').addEventListener('click', closeLightbox);
+lightbox.addEventListener('click', e => { if(e.target === lightbox) closeLightbox(); });
+document.addEventListener('keydown', e => { if(e.key === 'Escape') closeLightbox(); });
+
+/* ---------- Smooth scroll buttons ---------- */
+document.querySelectorAll('[data-scroll-to]').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelector(btn.dataset.scrollTo).scrollIntoView({ behavior:'smooth' });
+  });
+});
+
+/* ---------- Opening screen + first user gesture (needed for audio autoplay) ---------- */
+const music = document.getElementById('bg-music');
+const musicToggle = document.getElementById('music-toggle');
+const openingScreen = document.getElementById('opening');
+
+document.getElementById('open-site-btn').addEventListener('click', () => {
+  openingScreen.classList.add('hidden');
+  musicToggle.classList.remove('opening-hidden');
+  music.volume = 0.55;
+  music.play().catch(() => { /* autoplay blocked — user can tap the music button */ });
+  musicToggle.textContent = '♪';
+});
+
+let musicPlaying = true;
+musicToggle.addEventListener('click', () => {
+  if (musicPlaying){ music.pause(); musicToggle.textContent = '♪̶'; }
+  else { music.play().catch(()=>{}); musicToggle.textContent = '♪'; }
+  musicPlaying = !musicPlaying;
+});
+
+/* ---------- Envelope opening ---------- */
+const envelope = document.getElementById('envelope');
+const openLetterBtn = document.getElementById('open-letter-btn');
+const letterWrap = document.getElementById('letter-wrap');
+
+openLetterBtn.addEventListener('click', () => {
+  envelope.classList.add('opening');
+  openLetterBtn.style.opacity = '0';
+  openLetterBtn.style.pointerEvents = 'none';
+  setTimeout(() => {
+    letterWrap.classList.add('show');
+    letterWrap.scrollIntoView({ behavior:'smooth', block:'center' });
+  }, 500);
+});
+
+/* ---------- Scroll reveal ---------- */
+const revealEls = document.querySelectorAll('.reveal');
+const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+if (prefersReduced){
+  revealEls.forEach(el => el.classList.add('in-view'));
+} else {
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting){
+        entry.target.classList.add('in-view');
+        io.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.15 });
+  revealEls.forEach(el => io.observe(el));
+}
+
+/* ---------- Floating petals ---------- */
+if (!prefersReduced){
+  const petalContainer = document.getElementById('petals');
+  const petalCount = 10;
+  for (let i = 0; i < petalCount; i++){
+    const p = document.createElement('div');
+    p.className = 'petal';
+    p.style.left = Math.random() * 100 + 'vw';
+    p.style.animationDuration = (14 + Math.random() * 10) + 's';
+    p.style.animationDelay = (Math.random() * 14) + 's';
+    p.style.width = p.style.height = (6 + Math.random() * 8) + 'px';
+    petalContainer.appendChild(p);
+  }
+}
+</script>
+
+</body>
+</html>
