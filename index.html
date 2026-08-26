@@ -278,7 +278,7 @@
     flex-direction:column;
     gap:1.5rem;
     background-image:
-      linear-gradient(rgba(251,243,239,.45), rgba(251,243,239,.55)),
+      linear-gradient(rgba(251,243,239,.85), rgba(251,243,239,.90)),
       url('images/hero-photo.jpg');
     background-size:cover;
     background-position:center;
@@ -477,19 +477,49 @@
 
   .envelope{
     position:relative;
-    width:min(320px, 80vw);
+    width:min(220px, 60vw);
+    aspect-ratio:3/2;
     margin:0 auto;
-    cursor:pointer;
     transition:transform .35s var(--ease), opacity .5s var(--ease);
   }
-  .envelope:hover{ transform:translateY(-4px) scale(1.02); }
-  .envelope:active{ transform:scale(.97); }
   .envelope.opening{ opacity:0; transform:scale(.9); pointer-events:none; }
-  .envelope-photo{
-    width:100%;
-    border-radius:8px;
+
+  .envelope-graphic{ position:relative; width:100%; height:100%; }
+  .env-body{
+    position:absolute; inset:0;
+    background:var(--paper);
+    border-radius:6px;
     box-shadow:0 16px 34px -14px rgba(74,50,56,.45);
-    display:block;
+    overflow:hidden;
+  }
+  .env-body::before,
+  .env-body::after{
+    content:'';
+    position:absolute;
+    top:0;
+    width:0; height:0;
+    border-top:38px solid var(--blush);
+  }
+  .env-body::before{ left:0; border-left:0 solid transparent; border-right:60px solid transparent; }
+  .env-body::after{ right:0; border-right:0 solid transparent; border-left:60px solid transparent; }
+  .env-flap{
+    position:absolute;
+    top:0; left:0; right:0;
+    height:58%;
+    background:var(--dusty);
+    clip-path:polygon(0 0, 100% 0, 50% 100%);
+  }
+  .env-heart{
+    position:absolute;
+    left:50%; top:44%;
+    transform:translate(-50%,-50%);
+    width:44px; height:44px;
+    background:var(--berry);
+    border-radius:50%;
+    color:var(--cream);
+    display:flex; align-items:center; justify-content:center;
+    font-size:1.1rem;
+    box-shadow:0 6px 14px -4px rgba(74,50,56,.5);
   }
   .unlock-area{ display:flex; flex-direction:column; align-items:center; gap:1rem; transition:opacity .5s var(--ease); }
 
@@ -724,7 +754,11 @@
   <div class="env-sub reveal">Open when you're ready.</div>
 
   <div class="envelope reveal" id="envelope">
-    <img class="envelope-photo" src="images/envelope.jpg" alt="A sealed envelope">
+    <div class="envelope-graphic">
+      <div class="env-body"></div>
+      <div class="env-flap"></div>
+      <div class="env-heart">♡</div>
+    </div>
   </div>
 
   <div class="unlock-area reveal" id="unlock-area">
