@@ -658,10 +658,6 @@
       <button class="btn outline op-next">Next →</button>
     </div>
     <div class="op-screen">
-      <div class="op-text op-playful">Hihihi 🥰</div>
-      <button class="btn outline op-next">Next →</button>
-    </div>
-    <div class="op-screen">
       <div class="op-text">Haaa...</div>
       <button class="btn outline op-next">Next →</button>
     </div>
@@ -698,7 +694,7 @@
     </div>
 
     <div class="op-dots" id="op-dots">
-      <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+      <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
     </div>
 
   </div>
@@ -908,7 +904,7 @@ let currentOpScreen = 0;
 // dots correspond to the 9 "tease" screens only (op-screen indices 1-9)
 function updateOpDots(){
   const teaseIndex = currentOpScreen - 1; // 0-based within tease range
-  if (teaseIndex >= 0 && teaseIndex <= 8){
+  if (teaseIndex >= 0 && teaseIndex <= 7){
     opDotsWrap.classList.add('visible');
     opDots.forEach((d, i) => d.classList.toggle('active', i === teaseIndex));
   } else {
