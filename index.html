@@ -491,8 +491,52 @@
     box-shadow:0 16px 34px -14px rgba(74,50,56,.45);
     display:block;
   }
-  #open-letter-btn{ margin-top:.5rem; }
-  .envelope.opening + #open-letter-btn{ opacity:0; pointer-events:none; }
+  .unlock-area{ display:flex; flex-direction:column; align-items:center; gap:1rem; transition:opacity .5s var(--ease); }
+
+  .password-form{
+    display:none;
+    flex-direction:column;
+    align-items:center;
+    gap:.9rem;
+  }
+  .password-form.show{ display:flex; }
+
+  .password-hint{
+    font-family:var(--caption);
+    font-size:1.1rem;
+    color:var(--berry);
+    margin:0;
+  }
+  .password-input{
+    font-family:var(--body);
+    font-size:1.1rem;
+    letter-spacing:.2em;
+    text-align:center;
+    width:180px;
+    padding:.7rem 1rem;
+    border-radius:999px;
+    border:1.5px solid var(--dusty);
+    background:#fff;
+    color:var(--ink);
+    outline:none;
+    transition:border-color .3s var(--ease);
+  }
+  .password-input:focus{ border-color:var(--berry); }
+  .password-error{
+    display:none;
+    font-family:var(--caption);
+    font-size:1.05rem;
+    color:var(--berry);
+    margin:0;
+  }
+  .password-error.show{ display:block; }
+
+  @keyframes shake{
+    0%,100%{ transform:translateX(0); }
+    25%{ transform:translateX(-8px); }
+    75%{ transform:translateX(8px); }
+  }
+  .password-input.shake{ animation:shake .35s var(--ease); border-color:var(--berry); }
 
   /* ============ LETTER ============ */
   #letter-wrap{
@@ -692,10 +736,19 @@
   <div class="env-sub reveal">Open when you're ready.</div>
 
   <div class="envelope reveal" id="envelope">
-    <img class="envelope-photo" src="images/envelope.jpg" alt="Tap to open the letter">
+    <img class="envelope-photo" src="images/envelope.jpg" alt="A sealed envelope">
   </div>
 
-  <button class="btn outline reveal" id="open-letter-btn">Open the letter 💌</button>
+  <div class="unlock-area reveal" id="unlock-area">
+    <button class="btn outline" id="show-password-btn">Enter password to open 🔒</button>
+
+    <div class="password-form" id="password-form">
+      <p class="password-hint">Enter password to open ♡</p>
+      <input type="password" id="password-input" class="password-input" placeholder="•••" inputmode="text" autocomplete="off">
+      <button class="btn" id="password-submit">Unlock ✓</button>
+      <p class="password-error" id="password-error">Not quite... try again 🔪</p>
+    </div>
+  </div>
 
   <div id="letter-wrap">
     <div class="letter-heading">To Sumukhiii,</div>
@@ -873,23 +926,47 @@ musicToggle.addEventListener('click', () => {
   musicPlaying = !musicPlaying;
 });
 
-/* ---------- Envelope opening ---------- */
+/* ---------- Password-gated letter ---------- */
+// EDIT ME: change the password here (this is NOT real security — anyone who views
+// the page source can see it — it's just a fun "type the word to unlock" gate).
+const LETTER_PASSWORD = "🔪";
+
 const envelope = document.getElementById('envelope');
-const openLetterBtn = document.getElementById('open-letter-btn');
+const unlockArea = document.getElementById('unlock-area');
+const showPasswordBtn = document.getElementById('show-password-btn');
+const passwordForm = document.getElementById('password-form');
+const passwordInput = document.getElementById('password-input');
+const passwordSubmit = document.getElementById('password-submit');
+const passwordError = document.getElementById('password-error');
 const letterWrap = document.getElementById('letter-wrap');
 
-function openLetter(){
-  envelope.classList.add('opening');
-  openLetterBtn.style.opacity = '0';
-  openLetterBtn.style.pointerEvents = 'none';
-  setTimeout(() => {
-    letterWrap.classList.add('show');
-    letterWrap.scrollIntoView({ behavior:'smooth', block:'center' });
-  }, 500);
+showPasswordBtn.addEventListener('click', () => {
+  showPasswordBtn.style.display = 'none';
+  passwordForm.classList.add('show');
+  passwordInput.focus();
+});
+
+function tryUnlock(){
+  if (passwordInput.value.trim() === LETTER_PASSWORD){
+    envelope.classList.add('opening');
+    unlockArea.style.opacity = '0';
+    unlockArea.style.pointerEvents = 'none';
+    setTimeout(() => {
+      envelope.style.display = 'none';
+      unlockArea.style.display = 'none';
+      letterWrap.classList.add('show');
+      letterWrap.scrollIntoView({ behavior:'smooth', block:'center' });
+    }, 500);
+  } else {
+    passwordError.classList.add('show');
+    passwordInput.classList.add('shake');
+    passwordInput.value = '';
+    setTimeout(() => passwordInput.classList.remove('shake'), 350);
+  }
 }
 
-openLetterBtn.addEventListener('click', openLetter);
-envelope.addEventListener('click', openLetter);
+passwordSubmit.addEventListener('click', tryUnlock);
+passwordInput.addEventListener('keydown', e => { if (e.key === 'Enter') tryUnlock(); });
 
 /* ---------- Scroll reveal ---------- */
 const revealEls = document.querySelectorAll('.reveal');
