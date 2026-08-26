@@ -542,29 +542,17 @@
   #letter-wrap{
     max-width:560px;
     width:100%;
-    background:var(--paper);
-    border-radius:8px;
-    padding:2.6rem 2rem;
-    box-shadow:0 20px 40px -18px rgba(74,50,56,.4);
     opacity:0;
     transform:scale(.85) translateY(20px);
     transition:opacity .8s var(--ease), transform .8s var(--ease);
     display:none;
   }
   #letter-wrap.show{ display:block; opacity:1; transform:scale(1) translateY(0); }
-  .letter-heading{
-    font-family:var(--script);
-    font-size:2rem;
-    color:var(--berry);
-    margin-bottom:1.2rem;
-  }
-  .letter-body{
-    font-family:var(--body);
-    font-size:1.02rem;
-    line-height:2;
-    text-align:left;
-    color:var(--ink);
-    white-space:pre-line;
+  .letter-photo{
+    width:100%;
+    border-radius:8px;
+    box-shadow:0 20px 40px -18px rgba(74,50,56,.4);
+    display:block;
   }
 
   /* ============ ENDING ============ */
@@ -751,14 +739,8 @@
   </div>
 
   <div id="letter-wrap">
-    <div class="letter-heading">To Sumukhiii,</div>
-    <div class="letter-body" id="letter-body">
-<!-- ================================================================ -->
-<!-- EDIT ME: replace this placeholder with the real letter text.      -->
-<!-- Use blank lines for paragraph breaks — they'll show automatically. -->
-<!-- ================================================================ -->
-[ Write your letter to Sumukhiii here. This is just a placeholder — replace this entire block of text with what you actually want to say. Line breaks and blank lines will be preserved exactly as you type them. ]
-    </div>
+    <!-- EDIT ME: this shows your uploaded letter photo. Rename your letter image to letter.jpg -->
+    <img src="images/letter.jpg" alt="A letter for Sumukhiii" class="letter-photo">
   </div>
 </section>
 
